@@ -5,7 +5,7 @@ import wordlejava.*;
 /**
  *
  * Console-based game based that allows a user to play a single game of Wordle. Should
- * be run in an ANSI console to get color-coded results. Game finishes and prints the resuls
+ * be run in an ANSI console to get color-coded results. Game finishes and prints the results
  * and then prints the WordleSolver results for the user to compare.
  *
  * @author johnmatthew
@@ -18,7 +18,8 @@ public class PlayWordle {
 	private static final String ANSI_YELLOW = "\u001B[33m";
 	private static final String ANSI_RED = "\033[0;31m";
 
-	private static Hashtable<String, String> resultsKeyboard;
+	private static Hashtable<Character, String> resultsKeyboard;
+	private static String ALPHA_KEYBOARD = "qwertyuiopasdfghjklzxcvbnm";
 
 	public static void main(String []args) {
 
@@ -124,34 +125,34 @@ public class PlayWordle {
 		System.out.println(); // formatting
 	}
 
+	/**
+	 * Prints a standard US English keyboard with colors relating to
+	 * the result of a guessed character if they've been guessed.
+	 */
 	private static void printKeyboard() {
 
-		System.out.print(resultsKeyboard.get("q") + "q " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("w") + "w " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("e") + "e " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("r") + "r " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("t") + "t " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("y") + "y " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("u") + "u " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("i") + "i " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("o") + "o " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("p") + "p " + ANSI_RESET + "\n ");
-		System.out.print(resultsKeyboard.get("a") + "a " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("s") + "s " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("d") + "d " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("f") + "f " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("g") + "g " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("h") + "h " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("j") + "j " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("k") + "k " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("l") + "l " + ANSI_RESET + "\n  ");
-		System.out.print(resultsKeyboard.get("z") + "z " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("x") + "x " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("c") + "c " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("v") + "v " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("b") + "b " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("n") + "n " + ANSI_RESET);
-		System.out.print(resultsKeyboard.get("m") + "m " + ANSI_RESET);
+		for(int i = 0; i < 10; i++) {
+
+			char iChar = ALPHA_KEYBOARD.charAt(i);
+			System.out.print(resultsKeyboard.get(iChar) + Character.toString(iChar) + " " + ANSI_RESET);
+		}
+
+		System.out.print("\n ");
+
+		for(int i = 10; i < 19; i++) {
+
+			char iChar = ALPHA_KEYBOARD.charAt(i);
+			System.out.print(resultsKeyboard.get(iChar) + Character.toString(iChar) + " " + ANSI_RESET);
+		}
+
+		System.out.print("\n  ");
+
+		for(int i = 19; i < 26; i++) {
+
+			char iChar = ALPHA_KEYBOARD.charAt(i);
+			System.out.print(resultsKeyboard.get(iChar) + Character.toString(iChar) + " " + ANSI_RESET);
+		}
+
 		System.out.println();
 	}
 
@@ -168,53 +169,39 @@ public class PlayWordle {
 		switch(result) {
 			case 1:
 				System.out.print(ANSI_GREEN + Character.toString(letter) + ANSI_RESET + " ");
-				resultsKeyboard.replace(Character.toString(letter), ANSI_GREEN);
+				resultsKeyboard.replace(letter, ANSI_GREEN);
 				break;
 			case 2:
 				System.out.print(ANSI_YELLOW + Character.toString(letter) + ANSI_RESET + " ");
-				resultsKeyboard.replace(Character.toString(letter), ANSI_YELLOW);
+				resultsKeyboard.replace(letter, ANSI_YELLOW);
 				break;
 			case 0:
 				System.out.print(ANSI_RED + Character.toString(letter) + ANSI_RESET + " ");
-				resultsKeyboard.replace(Character.toString(letter), ANSI_RED);
+				resultsKeyboard.replace(letter, ANSI_RED);
 				break;
 			default:
 				System.out.print(ANSI_RESET + Character.toString(letter) + " ");
-				resultsKeyboard.replace(Character.toString(letter), ANSI_RESET);
+				resultsKeyboard.replace(letter, ANSI_RESET);
 		}
 
 		System.out.print(ANSI_RESET);
 	}
 
-	private static Hashtable<String,String> initResultsKeyboard() {
+	/**
+	 * Initializes the Hashtable for the keyboard that will keep track of each
+	 * letter and the result if it guess. Called in the constructor.
+	 *
+	 * @return a hashtable with all letters of the alphabet paiared with
+	 * 			"ANSI)_RESET" as a value.
+	 */
+	private static Hashtable<Character,String> initResultsKeyboard() {
 
-		Hashtable<String,String> keyboard = new Hashtable<>();
-		keyboard.put("a", ANSI_RESET);
-		keyboard.put("b", ANSI_RESET);
-		keyboard.put("c", ANSI_RESET);
-		keyboard.put("d", ANSI_RESET);
-		keyboard.put("e", ANSI_RESET);
-		keyboard.put("f", ANSI_RESET);
-		keyboard.put("g", ANSI_RESET);
-		keyboard.put("h", ANSI_RESET);
-		keyboard.put("i", ANSI_RESET);
-		keyboard.put("j", ANSI_RESET);
-		keyboard.put("k", ANSI_RESET);
-		keyboard.put("l", ANSI_RESET);
-		keyboard.put("m", ANSI_RESET);
-		keyboard.put("n", ANSI_RESET);
-		keyboard.put("o", ANSI_RESET);
-		keyboard.put("p", ANSI_RESET);
-		keyboard.put("q", ANSI_RESET);
-		keyboard.put("r", ANSI_RESET);
-		keyboard.put("s", ANSI_RESET);
-		keyboard.put("t", ANSI_RESET);
-		keyboard.put("u", ANSI_RESET);
-		keyboard.put("v", ANSI_RESET);
-		keyboard.put("w", ANSI_RESET);
-		keyboard.put("x", ANSI_RESET);
-		keyboard.put("y", ANSI_RESET);
-		keyboard.put("z", ANSI_RESET);
+		Hashtable<Character,String> keyboard = new Hashtable<>();
+
+		for(int i = 0; i < GuessManager.ALPHABET_STR.length(); i++) {
+
+			keyboard.put(GuessManager.ALPHABET_STR.charAt(i), ANSI_RESET);
+		}
 
 		return keyboard;
 	}

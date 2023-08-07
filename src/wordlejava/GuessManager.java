@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class GuessManager {
 
-	private static String ALPHABET_STR = "abcdefghijklmnopqrstuvwxyz";
+	public static String ALPHABET_STR = "abcdefghijklmnopqrstuvwxyz";
 
 	private List<String> library;
 	private int wordleLength;
